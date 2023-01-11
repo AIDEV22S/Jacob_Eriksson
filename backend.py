@@ -45,3 +45,5 @@ def retrieve_members():
 # Funktion för att skapa databasen, ska endast användas en gång per databas
 def create_engine():
     Base.metadata.create_all(engine)
+
+#create_engine()

@@ -3,8 +3,10 @@ import PySimpleGUI as sg
 from backend import Members
 from backend import retrieve_members
 from backend import session
+from backend import create_engine
 
-sg.theme('DarkAmber')
+sg.theme('DarkGreen5')
+create_engine()
 
 # En funktion som sorterar table-värden baserat på vilken kolumn man önskar sortera i.
 def sort_table(data, col_num_clicked):
@@ -17,12 +19,12 @@ def sort_table(data, col_num_clicked):
 # Andra window, för när vi ska fylla i värden för nya members i vår databas
 def create_add_member_window():
     layout = [
-        [sg.T('First Name:'), sg.I(key='-FIRST_NAME-', do_not_clear=False)],
-        [sg.T('Last Name:'), sg.I(key='-LAST_NAME-', do_not_clear=False)],
-        [sg.T('Street Address:'), sg.I(key='-STREET_ADDRESS-', do_not_clear=False)],
-        [sg.T('Post Address:'), sg.I(key='-POST_ADDRESS-', do_not_clear=False)],
-        [sg.T('Post Number:'), sg.I(key='-POST_NUMBER-', do_not_clear=False)],
-        [sg.T('Paid Fee:'), sg.R('Yes', 'RADIO', key='-PAID_YES-'), sg.R('No', 'RADIO', key='-PAID_NO-')],
+        [sg.T('First Name:'), sg.P(), sg.I(key='-FIRST_NAME-', do_not_clear=False)],
+        [sg.T('Last Name:'),sg.P(), sg.I(key='-LAST_NAME-', do_not_clear=False)],
+        [sg.T('Street Address:'),sg.P(), sg.I(key='-STREET_ADDRESS-', do_not_clear=False)],
+        [sg.T('Post Address:'),sg.P(), sg.I(key='-POST_ADDRESS-', do_not_clear=False)],
+        [sg.T('Post Number:'),sg.P(), sg.I(key='-POST_NUMBER-', do_not_clear=False)],
+        [sg.T('Paid Fee:         '), sg.R('Yes', 'RADIO', key='-PAID_YES-'), sg.R('No', 'RADIO', key='-PAID_NO-')],
         [sg.B('Add Member', key='-ADD_MEMBER-', bind_return_key=True), sg.B('Exit', button_color='Red')]]
     return sg.Window('Add Members', layout, finalize=True, enable_close_attempted_event=True)
 
@@ -43,7 +45,6 @@ def create_primary_window():
 # Det är denna vi kommer kalla på i main när vi önskar köra programmet
 def main():
     main_window, add_member_window = create_primary_window(), None
-
     def update_table(changed_values):
         return main_window['-TABLE-'].update(values=changed_values)
 
@@ -82,7 +83,7 @@ def main():
 
     main_window.bind('<Return>', '_ENTER'), main_window.bind('<Alt_L><a>', '_ADD'),\
     main_window.bind('<Alt_L><d>','_DEL'), main_window.bind('<Delete>', '_DELETE'),\
-    main_window.bind('<Escape>', '_ESC'), main_window.bind('<Alt_L><s>','_SEARCH')
+    main_window.bind('<Escape>', '_ESC'), main_window.bind('<Alt_L><s>','_SEARCH'),\
 
     # Main-event loop, det är här vi gör alla våra saker relaterade till gui
     while True:
